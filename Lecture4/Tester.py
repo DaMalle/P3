@@ -75,7 +75,7 @@ def hsv_colour_trim(image):
 
 def image_split_test(image):
     height, width = image.shape
-    cut_height = height // 8
+    cut_height = height // 2
     quarter_width = width // 4
 
     section_1 = image[:cut_height, :quarter_width]
@@ -92,16 +92,16 @@ def image_split_test(image):
 
 
 def check_green_amount(s1, s2, s3, s4):
-    print("Section 1: " + str(cv2.countNonZero(s1)))
+    #print("Section 1: " + str(cv2.countNonZero(s1)))
     if cv2.countNonZero(s1) > 1000:
         print("Big plant in section 1")
-    print("Section 2: " + str(cv2.countNonZero(s2)))
+    #print("Section 2: " + str(cv2.countNonZero(s2)))
     if cv2.countNonZero(s2) > 1000:
         print("Big plant in section 2")
-    print("Section 3: " + str(cv2.countNonZero(s3)))
+    #print("Section 3: " + str(cv2.countNonZero(s3)))
     if cv2.countNonZero(s3) > 1000:
         print("Big plant in section 3")
-    print("Section 4: " + str(cv2.countNonZero(s4)))
+    #print("Section 4: " + str(cv2.countNonZero(s4)))
     if cv2.countNonZero(s4) > 1000:
         print("Big plant in section 4")
 
@@ -120,6 +120,7 @@ def start_recording():
 # hsv_saturation(image)
 # excessive_green(image)
 # excessive_green_hsv(image)
-hsv_colour_trim(image)
+#hsv_colour_trim(image)
 # image_split_test(image)
+start_recording()
 cv2.waitKey()
