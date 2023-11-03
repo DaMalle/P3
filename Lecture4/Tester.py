@@ -52,8 +52,8 @@ def excessive_green_hsv(image):  # Not yet functional
 def hsv_colour_trim(image):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    # mask = cv2.inRange(hsv, (36, 25, 25), (86, 255, 255)) # Original values
-    mask = cv2.inRange(hsv, (40, 25, 25), (80, 255, 255))  # For testing purposes
+    mask = cv2.inRange(hsv, (36, 25, 25), (86, 255, 255)) # Original values
+    #mask = cv2.inRange(hsv, (40, 25, 25), (80, 255, 255))  # For testing purposes
     # mask = cv2.inRange(hsv, (36, 25, 25), (156, 255, 255))
 
     ## Slice the green
@@ -83,10 +83,18 @@ def image_split_test(image):
     section_3 = image[:cut_height, quarter_width * 2:quarter_width * 3]
     section_4 = image[:cut_height, quarter_width * 3:quarter_width * 4]
 
-    cv2.imshow('Sec1', section_1)
-    cv2.imshow('Sec2', section_2)
-    cv2.imshow('Sec3', section_3)
-    cv2.imshow('Sec4', section_4)
+    section_top = image[:cut_height, :]
+
+    cv2.line(section_top, (quarter_width, 0), (quarter_width, cut_height), (255, 0, 0), 1, 1)
+    cv2.line(section_top, (quarter_width*2, 0), (quarter_width*2, cut_height), (255, 0, 0), 1, 1)
+    cv2.line(section_top, (quarter_width*3, 0), (quarter_width*3, cut_height), (255, 0, 0), 1, 1)
+
+
+    cv2.imshow('Measure', section_top)
+    #cv2.imshow('Sec1', section_1)
+    #cv2.imshow('Sec2', section_2)
+    #cv2.imshow('Sec3', section_3)
+    #cv2.imshow('Sec4', section_4)
 
     check_green_amount(section_1, section_2, section_3, section_4)
 
