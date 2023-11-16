@@ -61,7 +61,7 @@ if __name__=="__main__":
     # Code for calibrating, so we have a rotation matrix that gets a top-down view.
     img = cv2.imread('Frame25.png')
     print((img.shape[1], img.shape[0]))
-
+    img2 = cv2.imread('Frame25.png')
     # Coordinates in (x,y) / (width, height)
     pt_A = [462, 393]
     pt_B = [760, 407]
@@ -86,13 +86,19 @@ if __name__=="__main__":
     print(center)
 
     # dst = np.float32([[400, 400], [800, 400], [400, 720], [800, 720]])
-    dst = np.float32([[640-maxWidth/3, img.shape[0]-maxHeight],
-                      [640+maxWidth/3, img.shape[0]-maxHeight],
-                      [640-maxWidth/3, img.shape[0]],
-                      [640+maxWidth/3, img.shape[0]]])
+    dst = np.float32([[640-maxWidth/4, (img.shape[0]-maxWidth)/2+360],
+                      [640+maxWidth/4, (img.shape[0]-maxWidth)/2+360],
+                      [640-maxWidth/4, (img.shape[0])/2+360],
+                      [640+maxWidth/4, (img.shape[0])/2+360]])
 
     M = cv2.getPerspectiveTransform(scr, dst)
-    out = cv2.warpPerspective(img, M, (img.shape[1], img.shape[0]))
+    out = cv2.warpPerspective(img2, M, (img2.shape[1], img2.shape[0]))
+
+    cv2.line(out, (555, 549), (555, 720), (0, 255, 0), 2)
+    cv2.line(out, (725, 549), (725, 720), (0, 255, 0), 2)
+    cv2.line(out, (555, 549), (725, 549), (0, 255, 0), 2)
+    cv2.line(out, (555, 720), (725, 720), (0, 255, 0), 2)
+
     print((out.shape[1], out.shape[0]))
     cv2.imshow('hello', img)
     cv2.imshow('Bird', out)
