@@ -84,20 +84,20 @@ if __name__=="__main__":
 
     center = [int(img.shape[1]/2), int(img.shape[0]/2)]  # Center coordinates in (width, height)
     print(center)
-
+    FlytY = 70
     # dst = np.float32([[400, 400], [800, 400], [400, 720], [800, 720]])
-    dst = np.float32([[640-maxWidth/4, (img.shape[0]-maxWidth)/2+360],
-                      [640+maxWidth/4, (img.shape[0]-maxWidth)/2+360],
-                      [640-maxWidth/4, (img.shape[0])/2+360],
-                      [640+maxWidth/4, (img.shape[0])/2+360]])
+    dst = np.float32([[640-maxWidth/4, (img.shape[0]-maxWidth)/2+360-FlytY],
+                      [640+maxWidth/4, (img.shape[0]-maxWidth)/2+360-FlytY],
+                      [640-maxWidth/4, (img.shape[0])/2+360-FlytY],
+                      [640+maxWidth/4, (img.shape[0])/2+360-FlytY]])
 
     M = cv2.getPerspectiveTransform(scr, dst)
     out = cv2.warpPerspective(img2, M, (img2.shape[1], img2.shape[0]))
 
-    cv2.line(out, (555, 549), (555, 720), (0, 255, 0), 2)
-    cv2.line(out, (725, 549), (725, 720), (0, 255, 0), 2)
-    cv2.line(out, (555, 549), (725, 549), (0, 255, 0), 2)
-    cv2.line(out, (555, 720), (725, 720), (0, 255, 0), 2)
+    cv2.line(out, (555, 549-FlytY), (555, 720-FlytY), (0, 255, 0), 2)
+    cv2.line(out, (725, 549-FlytY), (725, 720-FlytY), (0, 255, 0), 2)
+    cv2.line(out, (555, 549-FlytY), (725, 549-FlytY), (0, 255, 0), 2)
+    cv2.line(out, (555, 720-FlytY), (725, 720-FlytY), (0, 255, 0), 2)
 
     print((out.shape[1], out.shape[0]))
     cv2.imshow('hello', img)
