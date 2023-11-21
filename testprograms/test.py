@@ -9,6 +9,9 @@ with Picamera2() as cam:
     cam.configure(config)
 
     encoder = H264Encoder(10000000)
-    cam.start_recording(encoder, "noir_camera_test_2.h264")
+    #cam.start_recording(encoder, "noir_camera_test_2.h264")
+    cam.start_preview()
     time.sleep(30)
-    cam.stop_recording()
+    cam.stop_preview()
+    #cam.stop_recording()
+

@@ -6,13 +6,16 @@ from picamera2 import Picamera2
 
 # termination criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
 objp = np.zeros((10*7,3), np.float32)
 objp[:,:2] = np.mgrid[0:10,0:7].T.reshape(-1,2)
+
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
-images = glob.glob('./DataForArduCam/*.png')
+
+images = glob.glob('./DataForHQ/*.png')
 print(images) 
 
 for frame in images:
@@ -29,21 +32,20 @@ for frame in images:
         cv.drawChessboardCorners(img, (10,7), corners2, ret)
 
 ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
-print(mtx)
-print(dist)
+
 newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (img.shape[1], img.shape[0]), 0, (img.shape[1], img.shape[0]))
-print(newcameramtx)
+
 dst = cv.undistort(img, mtx, dist, None, newcameramtx)
 
-# np.savez('ArduCam', CamMatrix=mtx, NewCamMatrix=newcameramtx, Distortion=dist)
+np.savez('HQCam', CamMatrix=mtx, NewCamMatrix=newcameramtx, Distortion=dist)
 
 with Picamera2() as cam:
-	cam.configure(cam.create_preview_configuration(main={"format": "RGB888"}))
+	cam.configure(cam.create_preview_configuration(main={"format": "RGB888", "size": (img.shape[1], img.shape[0])}))
 	cam.start()
 	while True:
 		frame = cam.capture_array()
 		cv.imshow('before', frame)
 		dst = cv.undistort(frame, mtx, dist, None, newcameramtx)
-
+		# cv.line(dst, (int(1280/2), int(720)), (int(1280/2), int(720/2)), (0,0,255), 5)
 		cv.imshow("window", dst)
 		cv.waitKey(1)
