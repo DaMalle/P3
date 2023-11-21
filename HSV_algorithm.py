@@ -2,10 +2,10 @@ import cv2
 import numpy as np
 import os
 
-Rot = np.load('BirdRot.npz')
+Rot = (np.load('BirdView\\BirdRot.npz'))
 M = Rot['BirdRot']
 
-Cali = np.load('HQCam.npz')  # Change this dependent on camera
+Cali = np.load('CamCali\\HQCam.npz')  # Change this dependent on camera
 CM = Cali['CamMatrix']
 NCM = Cali['NewCamMatrix']
 DIST = Cali['Distortion']
