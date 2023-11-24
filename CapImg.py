@@ -19,10 +19,14 @@ with Picamera2() as cam:
 	img_counter = 0
 	while True:
 		frame = cam.capture_array()
-		dst = cv2.undistort(frame, CM, DIST, None, NCM)
-		out = cv2.warpPerspective(dst, M, (frame.shape[1], frame.shape[0]))
-		#cv2.line(dst, (int(frame.shape[1]/2), int(frame.shape[0]/2)), (int(frame.shape[1]/2), int(frame.shape[0])), (0,0,255), 3)
-		cv2.imshow("window", out)
+		#dst = cv2.undistort(frame, CM, DIST, None, NCM)
+		out = cv2.warpPerspective(frame, M, (frame.shape[1], frame.shape[0]))
+		#cv2.line(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), (int(frame.shape[1]/2), int(frame.shape[0])), (0,0,255), 3)
+		resized_image = out[91:312, 162:int(1116)]
+		cv2.line(resized_image, (int(954/2),0), (int(954/2),221), (0,0,255), 2)
+		cv2.line(resized_image, (int((954/2)/2),0), (int((954/2)/2),221), (0,0,255), 2)
+		cv2.line(resized_image, (int((954/2)/2)+int(954/2),0), (int((954/2)/2)+int(954/2),221), (0,0,255), 2)
+		cv2.imshow("window", resized_image)
 		cv2.waitKey(1)
 		
 		k = cv2.waitKey(1)
@@ -33,7 +37,7 @@ with Picamera2() as cam:
 		elif k%256 == 32:
 			# SPACE pressed
 			img_name = "opencv_frame2_{}.png".format(img_counter)
-			cv2.imwrite(img_name, out)
+			cv2.imwrite(img_name, frame)
 			print("{} written!".format(img_name))
 			img_counter += 1
 	cam.stop()

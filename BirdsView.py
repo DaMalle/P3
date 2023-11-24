@@ -59,15 +59,19 @@ while True:
 if __name__=="__main__":
 
     # Code for calibrating, so we have a rotation matrix that gets a top-down view.
-    img = cv2.imread('haha.png') # Change me to match the image you have taken!
+    img = cv2.imread('haha_no_calibration.png') # Change me to match the image you have taken!
     print((img.shape[1], img.shape[0]))
 
     # Coordinates in (x,y) / (width, height)
     # Top left, Top right, Bottom left, Bottom right.
-    pt_A = [462, 431]
-    pt_B = [803, 433]
-    pt_C = [449, 709]
-    pt_D = [842, 717]
+    #pt_A = [462, 431]
+    #pt_B = [803, 433]
+    #pt_C = [449, 709]
+    #pt_D = [842, 717]
+    pt_A = [483, 413]
+    pt_B = [808, 414]
+    pt_C = [445, 719]
+    pt_D = [842, 718]
     scr = np.float32([pt_A, pt_B, pt_C, pt_D])
 
     cv2.line(img, (pt_A[0], pt_A[1]), (pt_B[0], pt_B[1]), (0, 255, 0), 2)
