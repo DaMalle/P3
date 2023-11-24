@@ -15,7 +15,7 @@ objp[:,:2] = np.mgrid[0:10,0:7].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-images = glob.glob('./DataForHQ/*.png')
+images = glob.glob('./DataForArduCam/*.png')
 print(images) 
 
 for frame in images:
@@ -25,19 +25,20 @@ for frame in images:
     ret, corners = cv.findChessboardCorners(gray, (10,7), None)
     # If found, add object points, image points (after refining them)
     if ret == True:
-        objpoints.append(objp)
-        corners2 = cv.cornerSubPix(gray,corners, (11,11), (-1,-1), criteria)
-        imgpoints.append(corners2)
-        # Draw and display the corners
-        cv.drawChessboardCorners(img, (10,7), corners2, ret)
+	    objpoints.append(objp)
+	    corners2 = cv.cornerSubPix(gray,corners, (11,11), (-1,-1), criteria)
+	    imgpoints.append(corners2)
+	    # Draw and display the corners
+	    cv.drawChessboardCorners(img, (10,7), corners2, ret)
 
-ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+print(gray.shape[::-1])
+ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, (img.shape[1], img.shape[0]), None, None)
 
-newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (img.shape[1], img.shape[0]), 0, (img.shape[1], img.shape[0]))
+newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (img.shape[1], img.shape[0]), 1, (img.shape[1], img.shape[0]))
 
 dst = cv.undistort(img, mtx, dist, None, newcameramtx)
 
-np.savez('HQCam', CamMatrix=mtx, NewCamMatrix=newcameramtx, Distortion=dist)
+np.savez('ArduCam', CamMatrix=mtx, NewCamMatrix=newcameramtx, Distortion=dist)
 
 with Picamera2() as cam:
 	cam.configure(cam.create_preview_configuration(main={"format": "RGB888", "size": (img.shape[1], img.shape[0])}))
@@ -46,6 +47,7 @@ with Picamera2() as cam:
 		frame = cam.capture_array()
 		cv.imshow('before', frame)
 		dst = cv.undistort(frame, mtx, dist, None, newcameramtx)
+		cv.imwrite('AfterCali.png', dst)
 		# cv.line(dst, (int(1280/2), int(720)), (int(1280/2), int(720/2)), (0,0,255), 5)
 		cv.imshow("window", dst)
-		cv.waitKey(1)
+		cv.waitKey(2500)

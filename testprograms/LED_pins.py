@@ -21,6 +21,6 @@ def set_all_high() -> None:
 if __name__ == "__main__":
     io.setmode(io.BCM)
     io.setwarnings(False)
-    #set_all_high()
-    #time.sleep(10)
-    set_all_low()
+    set_all_high()
+    time.sleep(1)
+    # set_all_low()
