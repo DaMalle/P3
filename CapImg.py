@@ -26,8 +26,8 @@ with Picamera2() as cam:
 		cv2.line(resized_image, (int(954/2),0), (int(954/2),221), (0,0,255), 2)
 		cv2.line(resized_image, (int((954/2)/2),0), (int((954/2)/2),221), (0,0,255), 2)
 		cv2.line(resized_image, (int((954/2)/2)+int(954/2),0), (int((954/2)/2)+int(954/2),221), (0,0,255), 2)
-		cv2.imshow("window", resized_image)
-		cv2.waitKey(1)
+		cv2.imshow("window", frame)
+		cv2.waitKey(1) 
 		
 		k = cv2.waitKey(1)
 		if k%256 == 27:
