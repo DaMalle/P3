@@ -3,7 +3,7 @@ import numpy as np
 
 
 def blobweeds(binaryimage):
-    keypoints = detector.detect(ExG_inv)
+    keypoints = detector.detect(binaryimage)
     current = []  # Empty current on every frame.
     if len(keypoints) != 0:  # If there are any BLOBs - Sanity check
         # Find the x and y coordiantes for the BLOBs in centimeters.
@@ -18,7 +18,7 @@ def blobweeds(binaryimage):
             if len(prior) > 0:
                 unique = True
                 for x_prior, y_prior in prior:
-                    if np.abs(y_prior - y) <= cmpf * 1.5 and np.abs(x_prior - x) <= 17:   # cmpf * i%(3+1) 17 is a guess at error
+                    if np.abs(y_prior - y) <= cmpf * 1.5 and np.abs(x_prior - x) <= 17:   # cmpf * frames between checked frame + error of 0.5, and error 17 is a guess at error potential x axis error
                         unique = False
                 if unique:
                     weeds.append((x, y, y/cmasec, quadrant))
