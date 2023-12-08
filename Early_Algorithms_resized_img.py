@@ -58,6 +58,7 @@ def labhsv_algorithm(image):
 
     ret, a_pic = cv2.threshold(a, 122, 255, cv2.THRESH_BINARY)
     a_picture = cv2.bitwise_not(a_pic)
+
     # HSV
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
@@ -72,9 +73,7 @@ def labhsv_algorithm(image):
     # Combine Lab & HSV
     threshold_result = a_picture | green_hsv
 
-    return cv2.morphologyEx(
-        cv2.morphologyEx(threshold_result, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))),
-        cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7)))
+    return threshold_result
 
 
 Rot = np.load('BirdView/BirdRotArdu.npz')
