@@ -70,8 +70,12 @@ def labhsv_algorithm(image):
 
     hue, sat, val = cv2.split(green)
     ret, green_hsv = cv2.threshold(sat, 40, 255, cv2.THRESH_BINARY)
+    ret_hsv = cv2.morphologyEx(
+        cv2.morphologyEx(green_hsv, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))),
+        cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7)))
+
     # Combine Lab & HSV
-    threshold_result = a_picture | green_hsv
+    threshold_result = a_picture | ret_hsv
 
     return threshold_result
 
