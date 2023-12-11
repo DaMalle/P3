@@ -62,7 +62,7 @@ def labhsv_algorithm(image):
     # HSV
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    mask = cv2.inRange(hsv, (36, 45, 25), (86, 255, 255))
+    mask = cv2.inRange(hsv, (10, 45, 25), (100, 255, 255))
 
     imask = mask > 0
     green = np.zeros_like(image, np.uint8)
@@ -75,7 +75,7 @@ def labhsv_algorithm(image):
         cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7)))
 
     # Combine Lab & HSV
-    threshold_result = a_picture | ret_hsv
+    threshold_result = a_picture & ret_hsv
 
     return threshold_result
 
@@ -83,7 +83,7 @@ def labhsv_algorithm(image):
 Rot = np.load('BirdView/BirdRotArdu.npz')
 M = Rot['BirdRot']
 
-t_frames = len(os.listdir('./test5kmh'))
+t_frames = len(os.listdir('./nattest12kmh'))
 i = 0
 
 params = cv2.SimpleBlobDetector.Params()
@@ -106,15 +106,15 @@ params.filterByColor = False
 detector = cv2.SimpleBlobDetector.create(params)
 
 while i < t_frames:
-    picture = os.listdir('./test5kmh')[i]
-    curr_img = cv2.imread(('test5kmh/' + str(picture)))
+    picture = os.listdir('./nattest12kmh')[i]
+    curr_img = cv2.imread(('nattest12kmh/' + str(picture)))
     resized_image = curr_img[91:312, 162:int(1116)]
     image = labhsv_algorithm(resized_image)
 
     keypoints = detector.detect(image)
     blobs = cv2.drawKeypoints(resized_image, keypoints, np.array([]), (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-    cv2.imshow('frame' + str(i+180), blobs)
+    cv2.imshow('frame' + str(i+111), blobs)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     i += 1
